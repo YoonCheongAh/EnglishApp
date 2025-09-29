@@ -12,4 +12,10 @@ public class CustomException {
             super(message);
         }
     }
+
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 package com.doanchuyennganh.duong.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -30,8 +31,12 @@ public class Flashcard {
     @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
-    @Column(name= "audio_url", columnDefinition = "TEXT")
+    @Column(name = "audio_url", columnDefinition = "TEXT")
     private String audioUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private Topic topicEntity;
 
     public Long getId() {
         return id;
@@ -57,6 +62,14 @@ public class Flashcard {
         this.wordType = wordType;
     }
 
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
     public String getPhonetic() {
         return phonetic;
     }
@@ -73,28 +86,20 @@ public class Flashcard {
         this.meaningEn = meaningEn;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
     public String getMeaningVN() {
         return meaningVN;
     }
 
     public void setMeaningVN(String meaningVN) {
         this.meaningVN = meaningVN;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getAudioUrl() {
@@ -104,5 +109,12 @@ public class Flashcard {
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
-}
 
+    public Topic getTopicEntity() {
+        return topicEntity;
+    }
+
+    public void setTopicEntity(Topic topicEntity) {
+        this.topicEntity = topicEntity;
+    }
+}

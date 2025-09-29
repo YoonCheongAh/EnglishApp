@@ -3,6 +3,7 @@ package com.doanchuyennganh.duong.config;
 import com.doanchuyennganh.duong.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,12 +13,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true) // THÊM DÒNG NÀY
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    // Thêm UserRepository
     public SecurityConfig(JwtUtil jwtUtil, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
@@ -29,13 +30,16 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtUtil, userRepository);
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép truy cập không cần xác thực
                         .requestMatchers(
-                                "/api/auth/register",
-                                "/api/auth/login",
+                                "/api/auth/**",
                                 // Swagger UI endpoints
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
@@ -43,8 +47,7 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
-                        // Bảo vệ admin endpoints - chỉ ADMIN mới được truy cập
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // Các endpoint khác yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -52,7 +55,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form.disable())
                 .csrf(csrf -> csrf.disable())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

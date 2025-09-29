@@ -53,7 +53,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        String token = jwtUtil.generateToken(savedUser.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
         AuthResponse response = new AuthResponse();
         response.setAccessToken(token);
         response.setUserId(savedUser.getUserId());
@@ -73,11 +73,10 @@ public class UserService {
             throw new RuntimeException("Invalid username or password");
         }
 
-        // Cập nhật last login
-        user.setLastLogin(LocalDateTime.now()); // Sử dụng LocalDateTime
+        user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
         AuthResponse response = new AuthResponse();
         response.setAccessToken(token);
         response.setUserId(user.getUserId());

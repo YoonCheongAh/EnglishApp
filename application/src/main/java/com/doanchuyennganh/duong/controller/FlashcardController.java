@@ -6,6 +6,7 @@ import com.doanchuyennganh.duong.model.Flashcard;
 import com.doanchuyennganh.duong.service.FlashcardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,20 +34,29 @@ public class FlashcardController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Tạo flashcard mới")
     public FlashcardResponse createFlashcard(@RequestBody FlashcardRequest request) {
         return service.createFlashcard(request);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Cập nhật flashcard theo ID")
     public FlashcardResponse updateFlashcard(@PathVariable Long id, @RequestBody FlashcardRequest request) {
         return service.updateFlashcard(id, request);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Xóa flashcard")
     public void deleteFlashcard(@PathVariable Long id) {
         service.deleteFlashcard(id);
+    }
+
+    @GetMapping("/{id}/flashcards")
+    @Operation(summary = "Lấy tất cả flashcards theo topic ID")
+    public List<FlashcardResponse> getFlashcardsByTopic(@PathVariable Long id) {
+        return service.getFlashcardsByTopic(id);
     }
 }

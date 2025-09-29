@@ -21,12 +21,13 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
                 .subject(username)
+                .claim("role",role)
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(getSigningKey())
@@ -45,6 +46,19 @@ public class JwtUtil {
             throw new RuntimeException("Invalid JWT token", e);
         }
     }
+    public String getRoleFromToken(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("role", String.class);
+        } catch (JwtException e) {
+            throw new RuntimeException("Invalid JWT token", e);
+        }
+    }
+
 
     public boolean validateToken(String token) {
         try {

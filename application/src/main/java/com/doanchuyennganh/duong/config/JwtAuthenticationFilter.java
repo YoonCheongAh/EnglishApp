@@ -43,23 +43,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 username = jwtUtil.getUsernameFromToken(jwt);
             }
 
-            // Sửa: Tạo biến final để dùng trong lambda
-            final String finalUsername = username;
-            final String finalJwt = jwt;
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                User user = userRepository.findByUsername(username)
+                        .orElse(null);
 
-            if (finalUsername != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                if (jwtUtil.validateToken(finalJwt)) {
-                    // Load user từ database để lấy role
-                    User user = userRepository.findByUsername(finalUsername)
-                            .orElseThrow(() -> new RuntimeException("User not found: " + finalUsername));
+                if (user != null && jwtUtil.validateToken(jwt)) {
+                    String role = user.getRole().name();
 
-                    // Tạo authorities từ role của user
                     List<GrantedAuthority> authorities = Collections.singletonList(
-                            new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+                            new SimpleGrantedAuthority("ROLE_" + role)
                     );
 
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(finalUsername, null, authorities);
+                            new UsernamePasswordAuthenticationToken(user, null, authorities);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }

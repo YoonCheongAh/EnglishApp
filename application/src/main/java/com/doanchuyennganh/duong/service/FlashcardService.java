@@ -7,6 +7,7 @@ import com.doanchuyennganh.duong.repository.FlashcardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlashcardService {
@@ -76,6 +77,12 @@ public class FlashcardService {
         res.setImageUrl(flashcard.getImageUrl());
         res.setAudioUrl(flashcard.getAudioUrl());
         return res;
+    }
+    public List<FlashcardResponse> getFlashcardsByTopic(Long topicId) {
+        return repository.findByTopicId(topicId)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 }
 
