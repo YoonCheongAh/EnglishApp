@@ -19,4 +19,8 @@ public class SharedPrefManager {
     public static String getToken(){
         return sharedPreferences.getString("jwt_token", null);
     }
+
+    public static void clearAll() {
+        sharedPreferences.edit().clear().apply();
+    }
 }

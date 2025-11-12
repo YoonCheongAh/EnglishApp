@@ -1,6 +1,7 @@
 package com.example.englishapp.screen;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.englishapp.R;
 import com.example.englishapp.model.ProfileFragment;
+import com.example.englishapp.utils.SharedPrefManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,6 +28,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Khởi tạo SharedPrefManager
+        SharedPrefManager.init(this);
+
+        // Kiểm tra xem user đã login chưa
+        String token = SharedPrefManager.getToken();
+        if (token == null || token.isEmpty()) {
+            // Chưa login, chuyển về AuthActivity
+            Intent intent = new Intent(this, AuthActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         // Setup Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -58,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 // Settings
             } else if (id == R.id.nav_logout) {
                 // Logout
+                logout();
             }
 
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -96,6 +112,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void logout() {
+        // Xóa token
+        SharedPrefManager.saveToken(null);
+
+        // Chuyển về AuthActivity
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @SuppressLint("GestureBackNavigation")
