@@ -40,6 +40,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/api/flashcards",
+                                "/api/flashcards/**",
+                                "/api/topics",
+                                "/api/topics/**",
                                 // Swagger UI endpoints
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
