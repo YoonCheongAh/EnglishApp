@@ -10,11 +10,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "http://192.168.110.19:8080/";
     private static Retrofit retrofit;
 
     public static Retrofit getInstance() {
         if (retrofit == null) {
+            // Logging interceptor
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -22,16 +23,17 @@ public class RetrofitClient {
                     .addInterceptor(logging)
                     .addInterceptor(chain -> {
                         Request original = chain.request();
-
-                        String token = SharedPrefManager.getToken();
-
                         Request.Builder requestBuilder = original.newBuilder()
                                 .header("Accept", "application/json")
                                 .header("Content-Type", "application/json");
 
-                        // Thêm JWT token vào header nếu có
+                        // Lấy token từ SharedPrefManager
+                        String token = SharedPrefManager.getToken();
                         if (token != null && !token.isEmpty()) {
                             requestBuilder.header("Authorization", "Bearer " + token);
+                            android.util.Log.d("RetrofitClient", "Token sent: " + token);
+                        } else {
+                            android.util.Log.d("RetrofitClient", "No token!");
                         }
 
                         Request request = requestBuilder.build();
@@ -47,6 +49,7 @@ public class RetrofitClient {
         }
         return retrofit;
     }
+
     public static void resetInstance() {
         retrofit = null;
     }

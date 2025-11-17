@@ -5,6 +5,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 
 public interface ProfileService {
-    @GET("/api/profile")
+    @GET("/api/auth/profile")
     Call<UserProfileResponse> getProfile(@Header("Authorization") String authHeader);
 }

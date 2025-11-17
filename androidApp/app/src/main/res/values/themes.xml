@@ -12,8 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#FFFFFF</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- FIX: Không cho window vẽ đè lên status bar -->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:fitsSystemWindows">true</item>
-    </style>
+        <item name="android:fitsSystemWindows">true</item> </style>
 </resources>

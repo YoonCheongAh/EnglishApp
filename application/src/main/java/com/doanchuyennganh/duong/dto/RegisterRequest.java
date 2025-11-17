@@ -5,6 +5,7 @@ public class RegisterRequest {
     private String username;
     private String email;
     private String password;
+    private String confirmPassword;
 
     public String getFullname() {
         return fullname;
@@ -36,5 +37,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

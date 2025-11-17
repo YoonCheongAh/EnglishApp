@@ -59,4 +59,11 @@ public class FlashcardController {
     public List<FlashcardResponse> getFlashcardsByTopic(@PathVariable Long id) {
         return service.getFlashcardsByTopic(id);
     }
+
+    @GetMapping("/search")
+    @Operation(summary = "Tìm kiếm flashcards theo từ khóa")
+    public List<FlashcardResponse> searchFlashcards(@RequestParam String keyword) {
+        return service.searchFlashcards(keyword);
+    }
+
 }

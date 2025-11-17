@@ -20,6 +20,7 @@ import com.example.englishapp.api.RetrofitClient;
 import com.example.englishapp.model.AuthResponse;
 import com.example.englishapp.model.LoginRequest;
 import com.example.englishapp.utils.SharedPrefManager;
+import com.example.englishapp.utils.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -45,7 +46,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // Init shared preferences và auth service
         SharedPrefManager.init(requireContext());
         authService = RetrofitClient.getInstance().create(AuthService.class);
@@ -97,8 +97,8 @@ public class LoginFragment extends Fragment {
 
                     // Lưu token
                     SharedPrefManager.saveToken(auth.getAccessToken());
-
-                    // Reset Retrofit instance để lấy token mới
+                    SessionManager sessionManager = new SessionManager(getContext());
+                    sessionManager.saveLoginSession(auth.getUserId(), auth.getUsername(), auth.getAccessToken());
                     RetrofitClient.resetInstance();
 
                     android.util.Log.d("LoginFragment", "Login successful. Token saved: " + auth.getAccessToken());
