@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Quản Trị App Học Tiếng Anh - Dashboard</title>
+
+    <link rel="stylesheet" href="node_modules/simplebar/dist/simplebar.css">
+    <link rel="stylesheet" href="css/vendors/simplebar.css">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/examples.css" rel="stylesheet">
+    <link href="node_modules/@coreui/chartjs/dist/css/coreui-chartjs.css" rel="stylesheet">
+
+    <script src="js/config.js"></script>
+    <script src="js/color-modes.js"></script>
+  </head>
+  <body>
+    <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
+      <div class="sidebar-header border-bottom">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-full fs-5 fw-bold">Admin Học Tiếng Anh</span>
+          <svg class="sidebar-brand-narrow" width="32" height="32" alt="CoreUI Logo">
+            <use xlink:href="assets/brand/coreui.svg#signet"></use>
+          </svg>
+        </div>
+        <button class="btn-close d-lg-none" type="button" data-coreui-theme="dark" aria-label="Close" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()"></button>
+      </div>
+
+      <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+        <li class="nav-item"><a class="nav-link active" href="index.html">
+          <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-speedometer"></use></svg> Tổng Quan</a>
+        </li>
+
+        <li class="nav-title">QUẢN LÝ NỘI DUNG & NGƯỜI DÙNG</li>
+
+        <li class="nav-item"><a class="nav-link" href="users.html">
+          <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-user"></use></svg> Quản lý Người Dùng</a>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="flashcards.html">
+          <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-book"></use></svg> Quản lý Từ Vựng</a>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="topics.html">
+          <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-tags"></use></svg> Quản lý Chủ Đề</a>
+        </li>
+
+        <li class="nav-divider"></li>
+        <li class="nav-title">HỖ TRỢ</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+          <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-star"></use></svg> Trang Hệ Thống</a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="login.html" target="_top">
+              <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-account-logout"></use></svg> Đăng Nhập</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="404.html" target="_top">
+              <svg class="nav-icon"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-bug"></use></svg> Lỗi 404</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer border-top d-none d-md-flex">
+        <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+      </div>
+    </div>
+
+    <div class="wrapper d-flex flex-column min-vh-100">
+      
+      <header class="header header-sticky p-0 mb-4">
+          <div class="container-fluid border-bottom px-4">
+              <button class="header-toggler d-md-none px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+                  <svg class="icon icon-lg"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-menu"></use></svg>
+              </button>
+              
+              <button class="header-toggler d-none d-md-inline-block px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle(coreui.Sidebar.unfoldable)">
+                  <svg class="icon icon-lg"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-menu"></use></svg>
+              </button>
+
+              <ul class="header-nav ms-auto me-4">
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-coreui-toggle="dropdown" aria-expanded="false">
+                          <img id="profile-avatar" src="assets/img/avatars/default.jpg" class="rounded-circle me-2" alt="Avatar" style="width: 36px; height: 36px; object-fit: cover;">
+                          <span id="profile-fullname" class="fw-semibold">Loading...</span>
+                      </a>
+                      
+                      <ul class="dropdown-menu dropdown-menu-end pt-0" aria-labelledby="profileDropdown">
+                          <div class="dropdown-header bg-body-tertiary text-center fw-semibold">
+                              <span id="profile-role"></span>
+                          </div>
+                          <li>
+                              <a class="dropdown-item" href="profile.html">
+                                  <svg class="icon me-2"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-user"></use></svg> Profile
+                              </a>
+                          </li>
+                          <li>
+                              <a class="dropdown-item" href="#" id="btn-logout">
+                                  <svg class="icon me-2"><use xlink:href="node_modules/@coreui/icons/sprites/free.svg#cil-account-logout"></use></svg> Logout
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+              </div>
+      </header>
+
+      <div class="body flex-grow-1">
+        <div class="container-lg px-4">
+          <h2 class="mb-4">Tổng Quan Học Tập</h2>
+
+          <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-xl-3">
+              <div class="card text-white bg-primary">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold" id="total-users">0</div>
+                    <div>Tổng Người Dùng</div>
+                  </div>
+                </div>
+                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                  <canvas class="chart" id="card-chart-users" height="70"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="card text-white bg-info">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold" id="total-flashcards">0</div>
+                    <div>Tổng Từ Vựng</div>
+                  </div>
+                </div>
+                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                  <canvas class="chart" id="card-chart-flashcards" height="70"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="card text-white bg-warning">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold" id="total-quizzes">0</div>
+                    <div>Bài Quiz Đã Làm</div>
+                  </div>
+                </div>
+                <div class="c-chart-wrapper mt-3" style="height:70px;">
+                  <canvas class="chart" id="card-chart-quizzes" height="70"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+              <div class="card text-white bg-danger">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold" id="avg-correct-rate">0%</div>
+                    <div>Tỷ Lệ Trả Lời Đúng TB</div>
+                  </div>
+                </div>
+                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                  <canvas class="chart" id="card-chart-rate" height="70"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h4 class="card-title mb-0">Hoạt Động Người Dùng Hàng Tháng</h4>
+                  <div class="small text-body-secondary">Dữ liệu từ bảng `attendance`</div>
+                </div>
+              </div>
+              <div class="c-chart-wrapper" style="height:300px;margin-top:40px;">
+                <canvas class="chart" id="main-activity-chart" height="300"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-header">Danh Sách Người Dùng Mới Nhất</div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table border mb-0">
+                      <thead class="fw-semibold text-nowrap">
+                        <tr class="align-middle">
+                          <th class="bg-body-secondary">ID</th>
+                          <th class="bg-body-secondary">Tên</th>
+                          <th class="bg-body-secondary">Email</th>
+                          <th class="bg-body-secondary text-center">Tiến độ (Từ đã học)</th>
+                          <th class="bg-body-secondary">Ngày tạo</th>
+                          <th class="bg-body-secondary"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="latest-users-body">
+                        <tr><td colspan="6" class="text-center text-body-secondary">Đang tải...</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div> </div> <footer class="footer px-4">
+        <div><a href="https://coreui.io">CoreUI </a><a href="https://coreui.io/product/free-bootstrap-admin-template/">Bootstrap Admin Template</a> &copy; 2025 creativeLabs.</div>
+        <div class="ms-auto">Powered by&nbsp;<a href="https://coreui.io/bootstrap/docs/">CoreUI UI Components</a></div>
+      </footer>
+    </div>
+
+    <script src="node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
+    <script src="node_modules/simplebar/dist/simplebar.min.js"></script>
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js"></script>
+    <script src="node_modules/@coreui/utils/dist/umd/index.js"></script>
+    <script src="js/app-dashboard-custom.js"></script>
+    <script src="js/auth-check.js"></script> 
+    <script src="js/main.js"></script> 
+  </body>
+</html>

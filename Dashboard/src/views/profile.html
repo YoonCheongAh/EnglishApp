@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Thông Tin Quản Trị Viên</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="./">
+  
+  <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.3.2/dist/css/coreui.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* 3. CSS TÙY CHỈNH (Nhúng thẳng vào đây cho chắc chắn nhận) */
+    body {
+      background-color: #f3f4f7; /* Màu nền xám nhẹ cho sang */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-container {
+      max-width: 700px;
+      margin: 3rem auto; /* Căn giữa màn hình */
+      padding: 0 1rem;
+    }
+
+    /* Header Profile */
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .profile-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .online-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      background: #2eb85c;
+      border: 4px solid #fff;
+      border-radius: 50%;
+    }
+
+    .user-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #321fdb;
+      margin-bottom: 0.2rem;
+    }
+
+    .user-username {
+      color: #8a93a2;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .role-badge {
+      display: inline-block;
+      background: #321fdb;
+      color: white;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Info Card */
+    .info-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #ebedef;
+      transition: background 0.2s;
+    }
+
+    .info-item:hover {
+      background-color: #f9f9fa;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-icon {
+      width: 45px;
+      height: 45px;
+      background: #e0ecfc;
+      color: #321fdb;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-right: 1.2rem;
+    }
+
+    .info-content {
+      flex: 1;
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      color: #8a93a2;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      color: #2c384a;
+      font-weight: 500;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 2rem;
+      color: #9da5b1;
+      font-size: 0.9rem;
+    }
+
+    .img-preview { 
+        width: 100px; 
+        height: 100px; 
+        object-fit: cover; 
+        border-radius: 50%; 
+        border: 2px solid #ddd; 
+        display: block;
+        margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-shield-alt me-2"></i>Admin System
+      </a>
+      <div class="ms-auto d-flex align-items-center">
+        <img id="nav-avatar" src="assets/img/avatars/default.jpg" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">
+        <span id="nav-fullname" class="fw-semibold me-3 d-none d-md-block">Loading...</span>
+        <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-container">
+    
+    <div class="profile-header">
+      <div class="avatar-wrapper">
+        <img id="header-avatar" src="assets/img/avatars/default.jpg" class="profile-avatar" alt="Avatar">
+        <div class="online-badge"></div>
+      </div>
+      <h1 class="user-name" id="header-fullname">Loading...</h1>
+      <p class="user-username" id="header-username">@username</p>
+      <div class="role-badge" id="header-role">ADMIN</div>
+      
+      <div class="mt-4">
+          <button class="btn btn-primary rounded-pill px-4" data-coreui-toggle="modal" data-coreui-target="#editProfileModal">
+              <i class="fas fa-pen me-2"></i>Chỉnh sửa hồ sơ
+          </button>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-user"></i></div>
+        <div class="info-content">
+          <div class="info-label">Tên đăng nhập</div>
+          <div class="info-value" id="card-username">...</div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-id-card"></i></div>
+        <div class="info-content">
+          <div class="info-label">Họ và tên</div>
+          <div class="info-value" id="card-fullname">...</div>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+        <div class="info-content">
+          <div class="info-label">Email</div>
+          <div class="info-value" id="card-email">...</div>
+        </div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-icon"><i class="fas fa-link"></i></div>
+        <div class="info-content">
+          <div class="info-label">Avatar URL</div>
+          <div class="info-value text-truncate" id="card-avatar" style="max-width: 250px;">...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <i class="fas fa-lock me-1"></i> Hệ thống bảo mật thông tin 2025
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="profile-form">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold">Cập nhật thông tin</h5>
+              <button type="button" class="btn-close" data-coreui-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <img id="preview-avatar" src="assets/img/avatars/default.jpg" class="img-preview mb-2">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Họ và tên</label>
+                    <input type="text" class="form-control" id="input-fullname" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control" id="input-email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Link Avatar (URL)</label>
+                    <input type="text" class="form-control" id="input-avatarUrl" placeholder="https://..." oninput="document.getElementById('preview-avatar').src = this.value">
+                    <small class="text-muted">Dán link ảnh từ internet vào đây</small>
+                </div>
+                <p id="profile-msg" class="text-center fw-bold"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Đóng</button>
+              <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.3.2/dist/js/coreui.bundle.min.js"></script>
+  
+  <script src="js/profile.js"></script>
+
+  <script>
+      function logout() {
+          if(confirm('Bạn có chắc muốn đăng xuất?')) {
+              localStorage.removeItem('jwt_token'); // Xóa token nếu có
+              localStorage.clear();
+              window.location.href = 'login.html';
+          }
+      }
+  </script>
+</body>
+</html>
