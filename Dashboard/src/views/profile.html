@@ -11,19 +11,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
-    /* 3. CSS TÙY CHỈNH (Nhúng thẳng vào đây cho chắc chắn nhận) */
     body {
-      background-color: #f3f4f7; /* Màu nền xám nhẹ cho sang */
+      background-color: #f3f4f7; 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .profile-container {
       max-width: 700px;
-      margin: 3rem auto; /* Căn giữa màn hình */
+      margin: 3rem auto; 
       padding: 0 1rem;
     }
 
-    /* Header Profile */
     .profile-header {
       text-align: center;
       margin-bottom: 2rem;
@@ -83,7 +81,6 @@
       letter-spacing: 1px;
     }
 
-    /* Info Card */
     .info-card {
       background: #fff;
       border-radius: 20px;
@@ -274,7 +271,7 @@
   <script>
       function logout() {
           if(confirm('Bạn có chắc muốn đăng xuất?')) {
-              localStorage.removeItem('jwt_token'); // Xóa token nếu có
+              localStorage.removeItem('jwt_token');
               localStorage.clear();
               window.location.href = 'login.html';
           }

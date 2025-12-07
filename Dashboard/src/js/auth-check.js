@@ -14,15 +14,13 @@ function requireAdmin() {
   return true;
 }
 
-// HIỂN THỊ THÔNG TIN TỪ localStorage (HEADER + PROFILE PAGE)
 function loadUserInfo() {
   const fullname = localStorage.getItem('fullname') || localStorage.getItem('username') || 'Admin';
-  const username = localStorage.getItem('username') || 'admin'; // fallback
+  const username = localStorage.getItem('username') || 'admin'; 
   const email = localStorage.getItem('email') || 'Chưa có email';
   const role = localStorage.getItem('role') || 'ADMIN';
   const avatarUrl = localStorage.getItem('avatarUrl') || 'assets/img/avatars/default.jpg';
 
-  // === HEADER (TẤT CẢ TRANG) ===
   const fullnameEl = document.getElementById('profile-fullname');
   const roleEl = document.getElementById('profile-role');
   const avatarEl = document.getElementById('profile-avatar');
@@ -31,7 +29,6 @@ function loadUserInfo() {
   if (roleEl) roleEl.textContent = role;
   if (avatarEl) avatarEl.src = avatarUrl;
 
-  // === PROFILE PAGE (HIỂN THỊ THÔNG TIN) ===
   if (window.location.pathname.includes('profile.html')) {
     const displayAvatar = document.getElementById('display-avatar');
     const displayUsername = document.getElementById('display-username');
@@ -60,12 +57,11 @@ function setupLogout() {
   }
 }
 
-// CHẠY KHI DOM SẴN SÀNG
 document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('login.html')) return;
 
   if (!requireAdmin()) return;
 
-  loadUserInfo(); // HIỂN THỊ HEADER + PROFILE
+  loadUserInfo(); 
   setupLogout();
 });

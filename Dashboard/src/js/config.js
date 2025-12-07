@@ -1,9 +1,3 @@
-/**
- * --------------------------------------------------------------------------
- * CoreUI Bootstrap Admin Template config.js
- * Licensed under MIT
- * --------------------------------------------------------------------------
- */
 (() => {
   const THEME = 'coreui-free-bootstrap-admin-template-theme'
   const urlParams = new URLSearchParams(window.location.href.split('?')[1])
@@ -13,9 +7,4 @@
   }
 })();
 
-/**
- * --------------------------------------------------------------------------
- *
- * --------------------------------------------------------------------------
- */
 window.API_BASE = window.API_BASE || 'http://localhost:5000';

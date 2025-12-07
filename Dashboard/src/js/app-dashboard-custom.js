@@ -1,9 +1,6 @@
 /* eslint-disable */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ==========================================
-    // 1. FAKE SỐ LIỆU THỐNG KÊ (STAT CARDS)
-    // ==========================================
     const stats = {
         users: 12580,
         flashcards: 4500,
@@ -11,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         rate: "85.4%"
     };
 
-    // Hàm chạy số nhảy nhảy cho đẹp (Animation count up)
     const animateValue = (id, start, end, duration) => {
         const obj = document.getElementById(id);
         if (!obj) return;
@@ -19,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            // Nếu là phần trăm thì không làm tròn số nguyên
             if (typeof end === 'string') {
                 obj.innerHTML = end;
             } else {
@@ -37,11 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     animateValue("total-quizzes", 0, stats.quizzes, 1500);
     document.getElementById("avg-correct-rate").innerText = stats.rate;
 
-    // ==========================================
-    // 2. FAKE BIỂU ĐỒ (CHARTS.JS)
-    // ==========================================
-    
-    // Cấu hình chung cho Chart nhỏ
     const commonOptions = {
         plugins: { legend: { display: false } },
         maintainAspectRatio: false,
@@ -55,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Chart 1: Users (Màu xanh dương) ---
     const ctxUsers = document.getElementById('card-chart-users');
     if (ctxUsers) {
         new Chart(ctxUsers, {
@@ -73,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Chart 2: Flashcards (Màu xanh nhạt - Info) ---
     const ctxFlashcards = document.getElementById('card-chart-flashcards');
     if (ctxFlashcards) {
         new Chart(ctxFlashcards, {
@@ -91,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Chart 3: Quizzes (Màu vàng - Warning) ---
     const ctxQuizzes = document.getElementById('card-chart-quizzes');
     if (ctxQuizzes) {
         new Chart(ctxQuizzes, {
@@ -110,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Chart 4: Rate (Màu đỏ - Danger) ---
     const ctxRate = document.getElementById('card-chart-rate');
     if (ctxRate) {
         new Chart(ctxRate, {
@@ -129,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- MAIN CHART: Hoạt động người dùng (Chart to đùng ở giữa) ---
     const ctxMain = document.getElementById('main-activity-chart');
     if (ctxMain) {
         new Chart(ctxMain, {
@@ -172,9 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
-    // 3. FAKE DANH SÁCH NGƯỜI DÙNG MỚI (TABLE)
-    // ==========================================
     const fakeUsers = [
         { id: 1001, name: "Nguyễn Văn An", email: "an.nguyen@example.com", progress: 85, date: "2023-10-25" },
         { id: 1002, name: "Trần Thị Bích", email: "bich.tran@example.com", progress: 40, date: "2023-10-24" },
@@ -186,15 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tableBody = document.getElementById('latest-users-body');
     if (tableBody) {
-        tableBody.innerHTML = ''; // Xóa dòng "Đang tải..."
+        tableBody.innerHTML = '';
         
         fakeUsers.forEach(user => {
-            // Logic màu thanh tiến độ
             let colorClass = 'bg-success';
             if (user.progress < 30) colorClass = 'bg-danger';
             else if (user.progress < 70) colorClass = 'bg-warning';
 
-            // Dùng dịch vụ UI Avatars để tạo ảnh đại diện giả theo tên
             const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random&color=fff`;
 
             const row = `

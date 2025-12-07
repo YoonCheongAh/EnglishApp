@@ -2,9 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const topicsTableBody = document.getElementById('topics-table-body');
-    const API_URL = 'http://localhost:8080/api/topics'; // Chạy Port 8080
-
-    // 1. LẤY TOKEN & CHECK LOGIN
+    const API_URL = 'http://localhost:8080/api/topics'; 
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         alert("Phiên đăng nhập hết hạn! Vui lòng đăng nhập lại.");
@@ -12,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 2. HÀM GỌI API (AUTH FETCH)
     const authFetch = async (url, options = {}) => {
         const headers = {
             'Content-Type': 'application/json',
@@ -28,9 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return response;
     };
 
-    // ===========================
-    // 3. LOAD DANH SÁCH CHỦ ĐỀ
-    // ===========================
+    
     const loadTopics = async () => {
         topicsTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Đang tải dữ liệu...</td></tr>';
         
@@ -48,18 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             topics.forEach(topic => {
-                // Map dữ liệu (Backend trả về camelCase)
                 const id = topic.id || topic.topicId;
                 const name = topic.name || topic.topicName;
                 const desc = topic.description || '';
                 
-                // Xử lý ngày tháng (Nếu backend trả về createdAt)
                 let dateStr = '—';
                 if (topic.createdAt) {
                     dateStr = new Date(topic.createdAt).toLocaleDateString('vi-VN');
                 }
 
-                // Escape chuỗi để tránh lỗi nút Sửa
                 const safeName = name ? name.replace(/'/g, "\\'") : '';
                 const safeDesc = desc ? desc.replace(/'/g, "\\'").replace(/"/g, "&quot;") : '';
 
@@ -83,20 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
             topicsTableBody.innerHTML = '<tr><td colspan="5" class="text-danger text-center">Lỗi kết nối Server (8080)!</td></tr>';
         }
     };
-
-    // ===========================
-    // 4. THÊM CHỦ ĐỀ MỚI
-    // ===========================
     const addForm = document.getElementById('add-topic-form');
     if (addForm) {
         addForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Lấy dữ liệu từ input (name="name" và name="description")
             const name = addForm.name.value; 
             const description = addForm.description.value;
-
-            // Payload: Gửi cả 2 key để chắc chắn khớp với DTO Backend
             const payload = { 
                 topicName: name, 
                 name: name,
@@ -104,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                // POST /api/topics
                 const res = await authFetch(API_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload)
@@ -113,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (res && res.ok) {
                     alert('✅ Thêm thành công!');
                     
-                    // Đóng modal bằng CoreUI
                     const modalElement = document.getElementById('addTopicModal');
                     const modal = coreui.Modal.getInstance(modalElement);
                     modal.hide();
@@ -128,13 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===========================
-    // 5. SỬA CHỦ ĐỀ
-    // ===========================
+   
     window.editTopic = async (id, currentName, currentDesc) => {
         const newName = prompt("Sửa tên chủ đề:", currentName);
-        if (newName === null) return; // Hủy bỏ
-        
+        if (newName === null) return; 
         const newDesc = prompt("Sửa mô tả:", currentDesc);
 
         const payload = {
@@ -158,9 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) { console.error(err); }
     };
 
-    // ===========================
-    // 6. XÓA CHỦ ĐỀ
-    // ===========================
     window.deleteTopic = async (id) => {
         if (!confirm(`Bạn có chắc muốn xóa chủ đề ID ${id}?`)) return;
 
@@ -175,6 +151,5 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) { console.error(err); }
     };
 
-    // Khởi chạy
     loadTopics();
 });

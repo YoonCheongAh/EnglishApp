@@ -3,23 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const flashcardsTableBody = document.getElementById('flashcards-table-body');
     const addButton = document.getElementById('btn-add-flashcard');
 
-    // 1. SỬA ĐÚNG ĐƯỜNG DẪN BACKEND
-    // Controller FlashcardController map tại /api/flashcards
-    const API_URL = 'http://localhost:8080/api/flashcards';
 
-    // 2. LẤY TOKEN & KIỂM TRA ĐĂNG NHẬP
+    const API_URL = 'http://localhost:8080/api/flashcards';
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         alert("Phiên đăng nhập hết hạn! Vui lòng đăng nhập lại.");
         window.location.href = 'login.html';
         return;
     }
-
-    // 3. HÀM GỌI API CÓ TOKEN (authFetch)
     const authFetch = async (url, options = {}) => {
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Gắn token vào header
+            'Authorization': `Bearer ${token}`, 
             ...options.headers
         };
 
@@ -33,14 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return response;
     };
 
-    // ======================
-    // 4. LOAD TỪ VỰNG (GET /api/flashcards)
-    // ======================
     const loadFlashcards = async () => {
         flashcardsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">Đang tải dữ liệu...</td></tr>';
         
         try {
-            const res = await authFetch(API_URL); // Gọi GET gốc
+            const res = await authFetch(API_URL); 
             if (!res) return;
 
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -55,13 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             cards.forEach(card => {
                 const hasAudio = card.audioUrl ? '🔊' : '—'; 
-                
-                // MAP DỮ LIỆU: Kiểm tra kỹ tên trường trả về từ Backend
-                // Backend có thể trả về 'id' hoặc 'flashcardId' tùy DTO
                 const id = card.id || card.flashcardId;
                 const word = card.word || '';
                 const type = card.wordType || '-';
-                // Xử lý Topic: Backend có thể trả về object Topic hoặc chỉ tên
                 const topicName = (typeof card.topic === 'object') ? card.topic.topicName : (card.topic || '—');
                 
                 const row = flashcardsTableBody.insertRow();
@@ -79,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             onclick="deleteFlashcard(${id})">Xóa</button>
                     </td>
                 `;
-                // Lưu dữ liệu vào row để nút Sửa lấy lại cho dễ (tránh lỗi quote string)
                 row.dataset.card = JSON.stringify(card);
             });
         } catch (err) {
@@ -88,9 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // ======================
-    // 5. THÊM TỪ MỚI (POST /api/flashcards)
-    // ======================
     if (addButton) {
         addButton.addEventListener('click', async () => {
             const word = prompt('Nhập từ mới (English):');
@@ -99,23 +83,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const wordType = prompt('Loại từ (n, v, adj...):');
             const meaningVn = prompt('Nghĩa tiếng Việt:');
             const meaningEn = prompt('Nghĩa tiếng Anh (Optional):');
-            // Lưu ý: Topic ở đây nhập ID hay Tên tùy thuộc backend xử lý
             const topicId = prompt('Nhập ID Chủ đề (Số):', '1'); 
-
-            // Payload phải khớp với FlashcardRequest.java
             const payload = { 
                 word, 
                 wordType, 
                 meaningVn, 
                 meaningEn, 
-                topicId: parseInt(topicId) || null, // Backend thường cần ID để link topic
+                topicId: parseInt(topicId) || null,
                 phonetic: '',
                 imageUrl: '',
                 audioUrl: ''
             };
 
             try {
-                // Backend: @PostMapping tại class level -> Không có /add
                 const res = await authFetch(API_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload)
@@ -133,13 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // ======================
-    // 6. XỬ LÝ SỰ KIỆN SỬA (PUT /api/flashcards/{id})
-    // ======================
-    // Hàm trung gian để lấy data từ dataset
     window.triggerEdit = (id) => {
-        // Tìm dòng chứa nút bấm để lấy data gốc
         const rows = Array.from(flashcardsTableBody.rows);
         const row = rows.find(r => r.innerHTML.includes(`triggerEdit(${id})`));
         if (!row) return;
@@ -150,16 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.editFlashcard = async (id, card) => {
         const newWord = prompt('Sửa từ vựng:', card.word);
-        if (!newWord) return; // Cancel
+        if (!newWord) return;
         
         const newMeaningVn = prompt('Sửa nghĩa tiếng Việt:', card.meaningVn);
         
-        // Payload cập nhật
         const payload = {
-            ...card, // Giữ lại các trường cũ (ảnh, audio...)
+            ...card, 
             word: newWord,
             meaningVn: newMeaningVn,
-            // Xử lý topic khi gửi lên (nếu backend cần topicId)
             topicId: (card.topic && card.topic.id) ? card.topic.id : null 
         };
 
@@ -180,9 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // ======================
-    // 7. XÓA TỪ VỰNG (DELETE /api/flashcards/{id})
-    // ======================
     window.deleteFlashcard = async (id) => {
         if (!confirm(`Xóa từ ID ${id}?`)) return;
         try {
@@ -200,6 +169,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Khởi động
     loadFlashcards();
 });

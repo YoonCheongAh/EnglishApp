@@ -1,13 +1,4 @@
 /* global Chart, coreui */
-
-/**
- * --------------------------------------------------------------------------
- * CoreUI Boostrap Admin Template main.js
- * Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
- * --------------------------------------------------------------------------
- */
-
-// Disable the on-canvas tooltip
 Chart.defaults.pointHitDetectionRadius = 1
 Chart.defaults.plugins.tooltip.enabled = false
 Chart.defaults.plugins.tooltip.mode = 'index'
