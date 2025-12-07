@@ -31,6 +31,9 @@ public class UserService {
         if (req.getPassword() == null || req.getPassword().length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters");
         }
+        if (req.getConfirmPassword() == null || !req.getConfirmPassword().equals(req.getPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
     }
 
     public AuthResponse register(RegisterRequest req) {
@@ -129,5 +132,38 @@ public class UserService {
 
     public String extractUsernameFromToken(String token) {
         return jwtUtil.getUsernameFromToken(token);
+    }
+
+    public Long getUserIdFromUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(User::getUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public void changePassword(String username, ChangePasswordRequest req) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Kiểm tra mật khẩu cũ
+        if (!passwordEncoder.matches(req.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+
+        // Kiểm tra mật khẩu mới
+        if (req.getNewPassword() == null || req.getNewPassword().length() < 6) {
+            throw new RuntimeException("New password must be at least 6 characters");
+        }
+
+        // Kiểm tra confirm
+        if (!req.getNewPassword().equals(req.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+
+        // Lưu mật khẩu mới
+        user.setPassword(passwordEncoder.encode(req.getNewPassword()));
+        user.setUpdatedAt(LocalDateTime.now());
+
+        userRepository.save(user);
     }
 }

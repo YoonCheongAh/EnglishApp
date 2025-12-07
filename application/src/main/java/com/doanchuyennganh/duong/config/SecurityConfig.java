@@ -40,12 +40,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/api/flashcards",
+                                "/api/flashcards/**",
+                                "/api/topics",
+                                "/api/topics/**",
                                 // Swagger UI endpoints
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/api/gemini-flashcards/**",
+                                "/uploads/**"
                         ).permitAll()
                         // Các endpoint khác yêu cầu xác thực
                         .anyRequest().authenticated()

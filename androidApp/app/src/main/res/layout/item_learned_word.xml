@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <!-- Image -->
+        <ImageView
+            android:id="@+id/ivFlashcardImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:background="#F0F0F0"
+            android:contentDescription="Word image" />
+
+        <!-- Text Content -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <!-- Word -->
+            <TextView
+                android:id="@+id/tvWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="monkey"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"/>
+
+            <!-- Phonetic -->
+            <TextView
+                android:id="@+id/tvPhonetic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ˈmʌŋki/"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:layout_marginTop="2dp" />
+
+            <!-- Word Type & Topic -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/tvWordType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="noun"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:background="#4CAF50"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tvTopic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Animals"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:background="#2196F3"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp" />
+            </LinearLayout>
+
+            <!-- Meaning -->
+            <TextView
+                android:id="@+id/tvMeaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a playful and intelligent animal..."
+                android:textSize="13sp"
+                android:textColor="#444444"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="6dp" />
+
+            <!-- Date Learned -->
+            <TextView
+                android:id="@+id/tvDateLearned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Học ngày: 15/11/2024"
+                android:textSize="11sp"
+                android:textColor="#999999"
+                android:textStyle="italic"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Unlearn Button (X icon) -->
+        <ImageView
+            android:id="@+id/btnUnlearn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Remove from learned"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:padding="6dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#FF5252"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

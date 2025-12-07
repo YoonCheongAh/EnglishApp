@@ -78,11 +78,19 @@ public class FlashcardService {
         res.setAudioUrl(flashcard.getAudioUrl());
         return res;
     }
+
     public List<FlashcardResponse> getFlashcardsByTopic(Long topicId) {
         return repository.findByTopicId(topicId)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public List<FlashcardResponse> searchFlashcards(String keyword) {
+        return repository.findByWordContainingIgnoreCase(keyword)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 }
 
