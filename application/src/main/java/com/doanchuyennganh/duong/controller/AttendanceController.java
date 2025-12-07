@@ -19,7 +19,6 @@ public class AttendanceController {
         this.service = service;
     }
 
-    // POST /api/attendance/checkin  { "userId": 1 }
     @PostMapping("/checkin")
     public ResponseEntity<CheckinResponse> checkIn(@RequestBody java.util.Map<String, Object> body) {
         Integer userId = (Integer) body.get("userId");
@@ -41,7 +40,6 @@ public class AttendanceController {
         return ResponseEntity.ok(r);
     }
 
-    // GET /api/attendance/counts?userId=1
     @GetMapping("/counts")
     public ResponseEntity<CountsResponse> counts(@RequestParam Integer userId) {
         LocalDate today = LocalDate.now();
@@ -51,7 +49,6 @@ public class AttendanceController {
         return ResponseEntity.ok(r);
     }
 
-    // GET /api/attendance/dates?userId=1  -> trả về list ngày đã điểm danh
     @GetMapping("/dates")
     public ResponseEntity<DatesResponse> dates(@RequestParam Integer userId) {
         List<LocalDate> list = service.getCheckinDates(userId);

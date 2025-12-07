@@ -49,7 +49,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/api/gemini-flashcards/**",
+                                "/uploads/**"
                         ).permitAll()
                         // Các endpoint khác yêu cầu xác thực
                         .anyRequest().authenticated()
